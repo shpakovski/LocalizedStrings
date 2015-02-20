@@ -15,6 +15,7 @@
 		DD52CFEF1A9769B500AA63F2 /* LocalizedStringsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD52CFEE1A9769B500AA63F2 /* LocalizedStringsTests.swift */; };
 		DD52CFF91A976C8500AA63F2 /* LocalizedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD52CFF81A976C8500AA63F2 /* LocalizedString.swift */; };
 		DD52CFFB1A976E6D00AA63F2 /* StringsFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD52CFFA1A976E6D00AA63F2 /* StringsFile.swift */; };
+		DD8052821A977864002F8456 /* WindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD8052811A977864002F8456 /* WindowController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +41,7 @@
 		DD52CFEE1A9769B500AA63F2 /* LocalizedStringsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizedStringsTests.swift; sourceTree = "<group>"; };
 		DD52CFF81A976C8500AA63F2 /* LocalizedString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalizedString.swift; sourceTree = "<group>"; };
 		DD52CFFA1A976E6D00AA63F2 /* StringsFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringsFile.swift; sourceTree = "<group>"; };
+		DD8052811A977864002F8456 /* WindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WindowController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +91,7 @@
 				DD52CFD71A9769B500AA63F2 /* Supporting Files */,
 				DD52CFF81A976C8500AA63F2 /* LocalizedString.swift */,
 				DD52CFFA1A976E6D00AA63F2 /* StringsFile.swift */,
+				DD8052811A977864002F8456 /* WindowController.swift */,
 			);
 			path = LocalizedStrings;
 			sourceTree = "<group>";
@@ -218,6 +221,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DD52CFFB1A976E6D00AA63F2 /* StringsFile.swift in Sources */,
+				DD8052821A977864002F8456 /* WindowController.swift in Sources */,
 				DD52CFDC1A9769B500AA63F2 /* ViewController.swift in Sources */,
 				DD52CFDA1A9769B500AA63F2 /* AppDelegate.swift in Sources */,
 				DD52CFF91A976C8500AA63F2 /* LocalizedString.swift in Sources */,
@@ -409,6 +413,7 @@
 				DD52CFF41A9769B500AA63F2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		DD52CFF51A9769B500AA63F2 /* Build configuration list for PBXNativeTarget "LocalizedStringsTests" */ = {
 			isa = XCConfigurationList;
@@ -417,6 +422,7 @@
 				DD52CFF71A9769B500AA63F2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

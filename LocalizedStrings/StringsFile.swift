@@ -8,12 +8,23 @@
 
 import Foundation
 
-class StringsFile {
-    
-    enum Encoding {
-        case UTF8
-        case UTF16
+enum Encoding {
+    case UTF8
+    case UTF16
+}
+
+extension Encoding {
+    var stringRepresentation: String {
+        switch self {
+        case .UTF8:
+            return "UTF-8";
+        case .UTF16:
+            return "UTF-16";
+        }
     }
+}
+
+class StringsFile {
     
     let original: String?
     let encoding: Encoding
