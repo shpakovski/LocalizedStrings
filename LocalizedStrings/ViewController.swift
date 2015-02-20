@@ -19,10 +19,15 @@ class ViewController: NSViewController {
     override var representedObject: AnyObject? {
         didSet {
             if self.viewLoaded {
-                // Do something useful?
+                self.willChangeValueForKey("encodingStringRepresentation")
+                self.didChangeValueForKey("encodingStringRepresentation")
             }
         }
     }
     
+    var encodingStringRepresentation: String? {
+        let stringsFile = representedObject as? StringsFile
+        return stringsFile?.encoding.stringRepresentation
+    }
 }
 
