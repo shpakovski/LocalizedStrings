@@ -13,6 +13,8 @@
 		DD52CFE01A9769B500AA63F2 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DD52CFDF1A9769B500AA63F2 /* Images.xcassets */; };
 		DD52CFE31A9769B500AA63F2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DD52CFE11A9769B500AA63F2 /* Main.storyboard */; };
 		DD52CFEF1A9769B500AA63F2 /* LocalizedStringsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD52CFEE1A9769B500AA63F2 /* LocalizedStringsTests.swift */; };
+		DD52CFF91A976C8500AA63F2 /* LocalizedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD52CFF81A976C8500AA63F2 /* LocalizedString.swift */; };
+		DD52CFFB1A976E6D00AA63F2 /* StringsFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD52CFFA1A976E6D00AA63F2 /* StringsFile.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -31,11 +33,13 @@
 		DD52CFD91A9769B500AA63F2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DD52CFDB1A9769B500AA63F2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		DD52CFDD1A9769B500AA63F2 /* Document.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
-		DD52CFDF1A9769B500AA63F2 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		DD52CFDF1A9769B500AA63F2 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = LocalizedStrings/Images.xcassets; sourceTree = "<group>"; };
 		DD52CFE21A9769B500AA63F2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		DD52CFE81A9769B500AA63F2 /* LocalizedStringsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LocalizedStringsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD52CFED1A9769B500AA63F2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DD52CFEE1A9769B500AA63F2 /* LocalizedStringsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizedStringsTests.swift; sourceTree = "<group>"; };
+		DD52CFF81A976C8500AA63F2 /* LocalizedString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalizedString.swift; sourceTree = "<group>"; };
+		DD52CFFA1A976E6D00AA63F2 /* StringsFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringsFile.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +63,7 @@
 		DD52CFCB1A9769B500AA63F2 = {
 			isa = PBXGroup;
 			children = (
+				DD52CFDF1A9769B500AA63F2 /* Images.xcassets */,
 				DD52CFD61A9769B500AA63F2 /* LocalizedStrings */,
 				DD52CFEB1A9769B500AA63F2 /* LocalizedStringsTests */,
 				DD52CFD51A9769B500AA63F2 /* Products */,
@@ -80,9 +85,10 @@
 				DD52CFD91A9769B500AA63F2 /* AppDelegate.swift */,
 				DD52CFDB1A9769B500AA63F2 /* ViewController.swift */,
 				DD52CFDD1A9769B500AA63F2 /* Document.swift */,
-				DD52CFDF1A9769B500AA63F2 /* Images.xcassets */,
 				DD52CFE11A9769B500AA63F2 /* Main.storyboard */,
 				DD52CFD71A9769B500AA63F2 /* Supporting Files */,
+				DD52CFF81A976C8500AA63F2 /* LocalizedString.swift */,
+				DD52CFFA1A976E6D00AA63F2 /* StringsFile.swift */,
 			);
 			path = LocalizedStrings;
 			sourceTree = "<group>";
@@ -211,8 +217,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DD52CFFB1A976E6D00AA63F2 /* StringsFile.swift in Sources */,
 				DD52CFDC1A9769B500AA63F2 /* ViewController.swift in Sources */,
 				DD52CFDA1A9769B500AA63F2 /* AppDelegate.swift in Sources */,
+				DD52CFF91A976C8500AA63F2 /* LocalizedString.swift in Sources */,
 				DD52CFDE1A9769B500AA63F2 /* Document.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
