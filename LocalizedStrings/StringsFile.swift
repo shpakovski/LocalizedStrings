@@ -28,10 +28,26 @@ class StringsFile {
     
     let original: String?
     let encoding: Encoding
+    var localizedStrings: [LocalizedString]
     
     init(original: String?, encoding: Encoding) {
         self.original = original
         self.encoding = .UTF8
+        self.localizedStrings = []
+        
+        if let original = original {
+            let nsstring = original as NSString
+            
+            let OneLinePattern = "\\s*\\\"(.+)\\\"\\s*=\\s*\\\"(.+)\\\";\\s*//\\s*(.*)\\s*"
+            var error: NSError?
+            if let regex = NSRegularExpression(pattern: OneLinePattern, options: nil, error: &error) {
+                regex.enumerateMatchesInString(original, options: nil, range: NSMakeRange(0, nsstring.length)) { (textCheckingResult, flags, stop) -> Void in
+                    
+                    let source = nsstring.substringWithRange(textCheckingResult.range)
+                    self.localizedStrings.append(LocalizedString(source: source))
+                }
+            }
+        }
     }
     
     convenience init() {
