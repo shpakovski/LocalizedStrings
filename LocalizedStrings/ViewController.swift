@@ -10,12 +10,6 @@ import Cocoa
 
 class ViewController: NSViewController {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
-
     override var representedObject: AnyObject? {
         didSet {
             if self.viewLoaded {
@@ -59,5 +53,19 @@ extension ViewController: NSTableViewDelegate {
             }
         }
         return tableView.rowHeight
+    }
+    
+    func tableViewColumnDidResize(notification: NSNotification) {
+        if let tableView = notification.object as? NSTableView {
+            if let bounds = tableView.enclosingScrollView?.contentView.bounds {
+                let visibleRows = tableView.rowsInRect(bounds)
+                let indexes = NSIndexSet(indexesInRange: visibleRows)
+                
+                NSAnimationContext.beginGrouping()
+                NSAnimationContext.currentContext().duration = 0.0
+                tableView.noteHeightOfRowsWithIndexesChanged(indexes)
+                NSAnimationContext.endGrouping()
+            }
+        }
     }
 }
