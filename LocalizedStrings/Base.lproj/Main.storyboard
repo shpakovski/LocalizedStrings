@@ -684,7 +684,7 @@
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                             <tableColumns>
-                                                <tableColumn editable="NO" width="435" minWidth="40" maxWidth="1000" id="Q9E-K3-cus">
+                                                <tableColumn identifier="LocalizedStringColumn" editable="NO" width="435" minWidth="40" maxWidth="1000" id="Q9E-K3-cus">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Identifier">
                                                         <font key="font" metaFont="smallSystem"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -730,6 +730,9 @@
                                                     </connections>
                                                 </tableColumn>
                                             </tableColumns>
+                                            <connections>
+                                                <outlet property="delegate" destination="5gI-5U-AMq" id="Pm7-MA-0zp"/>
+                                            </connections>
                                         </tableView>
                                     </subviews>
                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>

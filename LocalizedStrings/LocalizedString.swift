@@ -29,13 +29,13 @@ class LocalizedString: NSObject {
         get {
             let key = self.sourceString.substringWithRange(keyRange)
             let attributedKey = NSAttributedString(string: key, attributes: KeyAttributes)
-            let newline = NSAttributedString(string: "\n")
+            let separator = NSAttributedString(string: ": ")
             let value = self.sourceString.substringWithRange(valueRange)
-            let attributedValue = NSAttributedString(string: key, attributes: ValueAttributes)
+            let attributedValue = NSAttributedString(string: value, attributes: ValueAttributes)
             
             let result = NSMutableAttributedString()
             result.appendAttributedString(attributedKey)
-            result.appendAttributedString(newline)
+            result.appendAttributedString(separator)
             result.appendAttributedString(attributedValue)
             return result.copy() as NSAttributedString
         }
