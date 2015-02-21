@@ -26,32 +26,36 @@ extension Encoding {
 
 class StringsFile {
     
-    let original: String?
     let encoding: Encoding
-    var localizedStrings: [LocalizedString]
+    let localizedStrings: [LocalizedString]
     
-    init(original: String?, encoding: Encoding) {
-        self.original = original
+    init(contents: String?, encoding: Encoding) {
         self.encoding = .UTF8
-        self.localizedStrings = []
         
-        if let original = original {
-            let nsstring = original as NSString
+        var localizedStrings: [LocalizedString] = []
+        if let contents = contents {
+            let nsstring = contents as NSString
             
             let OneLinePattern = "\\s*\\\"(.+)\\\"\\s*=\\s*\\\"(.+)\\\";\\s*//\\s*(.*)\\s*"
             var error: NSError?
             if let regex = NSRegularExpression(pattern: OneLinePattern, options: nil, error: &error) {
-                regex.enumerateMatchesInString(original, options: nil, range: NSMakeRange(0, nsstring.length)) { (textCheckingResult, flags, stop) -> Void in
+                regex.enumerateMatchesInString(nsstring, options: nil, range: NSMakeRange(0, nsstring.length)) { (textCheckingResult, flags, stop) -> Void in
                     
-                    let source = nsstring.substringWithRange(textCheckingResult.range)
-                    self.localizedStrings.append(LocalizedString(source: source))
+                    let source = nsstring.substringWithRange(textCheckingResult.range) as NSString
+                    let key = textCheckingResult.rangeAtIndex(1)
+                    let value = textCheckingResult.rangeAtIndex(2)
+                    let comment = textCheckingResult.rangeAtIndex(3)
+                    let localized = LocalizedString(sourceString: source, keyRange: key, valueRange: value, commentRange: comment)
+                    
+                    localizedStrings.append(localized)
                 }
             }
         }
+        self.localizedStrings = localizedStrings
     }
     
     convenience init() {
-        self.init(original: nil, encoding: .UTF8)
+        self.init(contents: nil, encoding: .UTF8)
     }
     
     convenience init?(url: NSURL, error: NSErrorPointer) {
@@ -61,10 +65,10 @@ class StringsFile {
             switch enc {
                 
             case NSUTF8StringEncoding:
-                self.init(original: string, encoding: .UTF8)
+                self.init(contents: string, encoding: .UTF8)
                 
             case NSUTF16StringEncoding:
-                self.init(original: string, encoding: .UTF16)
+                self.init(contents: string, encoding: .UTF16)
                 
             default:
                 self.init()
