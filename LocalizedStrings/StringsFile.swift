@@ -38,15 +38,26 @@ class StringsFile {
         self.init(original: nil, encoding: .UTF8)
     }
     
-    convenience init(data: NSData) {
-        if let string = NSString(data: data, encoding: NSUTF16StringEncoding) {
-            self.init(original: string, encoding: .UTF16)
-        }
-        else if let string = NSString(data: data, encoding: NSUTF8StringEncoding) {
-            self.init(original: string, encoding: .UTF8)
+    convenience init?(url: NSURL, error: NSErrorPointer) {
+        
+        var enc = NSUTF8StringEncoding
+        if let string = NSString(contentsOfURL: url, usedEncoding: &enc, error: error) {
+            switch enc {
+                
+            case NSUTF8StringEncoding:
+                self.init(original: string, encoding: .UTF8)
+                
+            case NSUTF16StringEncoding:
+                self.init(original: string, encoding: .UTF16)
+                
+            default:
+                self.init()
+                return nil
+            }
         }
         else {
             self.init()
+            return nil
         }
     }
     
