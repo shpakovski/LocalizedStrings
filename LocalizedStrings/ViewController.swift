@@ -21,6 +21,9 @@ class ViewController: NSViewController {
             if self.viewLoaded {
                 self.willChangeValueForKey("encodingStringRepresentation")
                 self.didChangeValueForKey("encodingStringRepresentation")
+                
+                self.willChangeValueForKey("localizedStrings")
+                self.didChangeValueForKey("localizedStrings")
             }
         }
     }
@@ -29,5 +32,9 @@ class ViewController: NSViewController {
         let stringsFile = representedObject as? StringsFile
         return stringsFile?.encoding.stringRepresentation
     }
+    
+    var localizedStrings: [LocalizedString]? {
+        let stringsFile = representedObject as? StringsFile
+        return stringsFile?.localizedStrings
+    }
 }
-

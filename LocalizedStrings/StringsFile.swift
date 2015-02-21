@@ -39,15 +39,21 @@ class StringsFile {
             let OneLinePattern = "\\s*\\\"(.+)\\\"\\s*=\\s*\\\"(.+)\\\";\\s*//\\s*(.*)\\s*"
             var error: NSError?
             if let regex = NSRegularExpression(pattern: OneLinePattern, options: nil, error: &error) {
+                var offset = 0
                 regex.enumerateMatchesInString(nsstring, options: nil, range: NSMakeRange(0, nsstring.length)) { (textCheckingResult, flags, stop) -> Void in
                     
                     let source = nsstring.substringWithRange(textCheckingResult.range) as NSString
-                    let key = textCheckingResult.rangeAtIndex(1)
-                    let value = textCheckingResult.rangeAtIndex(2)
-                    let comment = textCheckingResult.rangeAtIndex(3)
-                    let localized = LocalizedString(sourceString: source, keyRange: key, valueRange: value, commentRange: comment)
+                    var key = textCheckingResult.rangeAtIndex(1)
+                    key.location -= offset
+                    var value = textCheckingResult.rangeAtIndex(2)
+                    value.location -= offset
+                    var comment = textCheckingResult.rangeAtIndex(3)
+                    comment.location -= offset
+                    let localized = LocalizedString(source: source, key: key, value: value, comment: comment)
                     
                     localizedStrings.append(localized)
+                    
+                    offset += source.length
                 }
             }
         }
