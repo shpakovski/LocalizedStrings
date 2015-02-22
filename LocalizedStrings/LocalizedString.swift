@@ -16,7 +16,11 @@ class LocalizedString: NSObject {
     }
     
     lazy var KeyAttributes: [NSObject : AnyObject] = {
-        let smallBoldFont = NSFont.boldSystemFontOfSize(NSFont.systemFontSizeForControlSize(.SmallControlSize))
+        let smallFontSize = NSFont.systemFontSizeForControlSize(.SmallControlSize)
+        if let smallFixedFont = NSFont.userFixedPitchFontOfSize(smallFontSize) {
+            return [NSFontAttributeName: smallFixedFont]
+        }
+        let smallBoldFont = NSFont.boldSystemFontOfSize(smallFontSize)
         return [NSFontAttributeName: smallBoldFont]
     }()
 
@@ -29,11 +33,20 @@ class LocalizedString: NSObject {
         get {
             let key = self.sourceString.substringWithRange(keyRange)
             let attributedKey = NSAttributedString(string: key, attributes: KeyAttributes)
-            let separator = NSAttributedString(string: ": ")
+            let separator = NSAttributedString(string: " = ")
+            let newline = NSAttributedString(string: "\n")
             let value = self.sourceString.substringWithRange(valueRange)
             let attributedValue = NSAttributedString(string: value, attributes: ValueAttributes)
             
             let result = NSMutableAttributedString()
+            result.appendAttributedString(attributedKey)
+            result.appendAttributedString(separator)
+            result.appendAttributedString(attributedValue)
+            result.appendAttributedString(newline)
+            result.appendAttributedString(attributedKey)
+            result.appendAttributedString(separator)
+            result.appendAttributedString(attributedValue)
+            result.appendAttributedString(newline)
             result.appendAttributedString(attributedKey)
             result.appendAttributedString(separator)
             result.appendAttributedString(attributedValue)

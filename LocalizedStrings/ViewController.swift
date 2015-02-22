@@ -42,7 +42,7 @@ extension ViewController: NSTableViewDelegate {
         if let tableColumn = tableView.tableColumns.first as? NSTableColumn {
             if let cellView = tableView.makeViewWithIdentifier(tableColumn.identifier, owner: self) as? NSTableCellView {
                 if let objectValues = self.arrayController?.content as? [LocalizedString] {
-                    
+                
                     cellView.objectValue = objectValues[row]
                     cellView.needsLayout = true
                     cellView.layoutSubtreeIfNeeded()

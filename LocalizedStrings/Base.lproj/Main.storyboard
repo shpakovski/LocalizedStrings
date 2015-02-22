@@ -720,6 +720,9 @@
                                                                 <constraint firstAttribute="bottom" secondItem="Nvt-I4-ZkE" secondAttribute="bottom" constant="8" id="q2N-SR-het"/>
                                                                 <constraint firstItem="Nvt-I4-ZkE" firstAttribute="top" secondItem="VSA-yV-9ur" secondAttribute="top" constant="8" id="ssl-0Y-rLg"/>
                                                             </constraints>
+                                                            <connections>
+                                                                <outlet property="textField" destination="Nvt-I4-ZkE" id="SF2-ju-TT2"/>
+                                                            </connections>
                                                         </tableCellView>
                                                     </prototypeCellViews>
                                                     <connections>
