@@ -703,7 +703,7 @@
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Nvt-I4-ZkE">
-                                                                    <rect key="frame" x="10" y="8" width="414" height="17"/>
+                                                                    <rect key="frame" x="8" y="9" width="418" height="17"/>
                                                                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="&quot;key&quot; = &quot;value&quot;; // comment" id="YuC-mH-Yxa">
                                                                         <font key="font" metaFont="system"/>
                                                                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -715,10 +715,10 @@
                                                                 </textField>
                                                             </subviews>
                                                             <constraints>
-                                                                <constraint firstItem="Nvt-I4-ZkE" firstAttribute="leading" secondItem="VSA-yV-9ur" secondAttribute="leading" constant="12" id="8h5-wZ-kOn"/>
+                                                                <constraint firstItem="Nvt-I4-ZkE" firstAttribute="leading" secondItem="VSA-yV-9ur" secondAttribute="leading" constant="10" id="8h5-wZ-kOn"/>
+                                                                <constraint firstAttribute="centerY" secondItem="Nvt-I4-ZkE" secondAttribute="centerY" constant="1" id="L43-gs-UPS"/>
                                                                 <constraint firstAttribute="centerX" secondItem="Nvt-I4-ZkE" secondAttribute="centerX" id="cbo-P9-5RB"/>
-                                                                <constraint firstAttribute="bottom" secondItem="Nvt-I4-ZkE" secondAttribute="bottom" constant="8" id="q2N-SR-het"/>
-                                                                <constraint firstItem="Nvt-I4-ZkE" firstAttribute="top" secondItem="VSA-yV-9ur" secondAttribute="top" constant="8" id="ssl-0Y-rLg"/>
+                                                                <constraint firstItem="Nvt-I4-ZkE" firstAttribute="top" secondItem="VSA-yV-9ur" secondAttribute="top" constant="7" id="ssl-0Y-rLg"/>
                                                             </constraints>
                                                             <connections>
                                                                 <outlet property="textField" destination="Nvt-I4-ZkE" id="SF2-ju-TT2"/>
