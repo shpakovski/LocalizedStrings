@@ -80,29 +80,74 @@ extension LocalizedString {
 
 // MARK:
 
+var RegularExpressions: [(NSRegularExpression, Int, Int, Int)] = { // regexp, key-index, value-index, comment-index or NSNotFound
+    
+    let patterns = [
+        
+        // \s*/\*+\s*(.*)\s*\*+/\s*\"(.*)\"\s*=\s*\"(.*)\";\s*
+        ("\\s*/\\*+\\s*(.*)\\s*\\*+/\\s*\\\"(.*)\\\"\\s*=\\s*\\\"(.*)\\\";\\s*", 2, 3, 1), // /** comment **/ "key" = "value";
+        
+        // \s*\"(.+)\"\s*=\s*\"(.+)\";\s*//\s*(.*)\s*
+        ("\\s*\\\"(.+)\\\"\\s*=\\s*\\\"(.+)\\\";\\s*//\\s*(.*)\\s*", 1, 2, 3), // "key" = "value"; // comment
+        
+        // \s*\"(.+)\"\s*=\s*\"(.+)\";\s*
+        ("\\s*\\\"(.+)\\\"\\s*=\\s*\\\"(.+)\\\";\\s*", 1, 2, NSNotFound)] // "key" = "value";
+    
+    return patterns.reduce([NSRegularExpression, Int, Int, Int]()) { (var expressions, pattern) -> [(NSRegularExpression, Int, Int, Int)] in
+        var error: NSError?
+        if let expression = NSRegularExpression(pattern: pattern.0, options: nil, error: &error) {
+            expressions.append((expression.0, pattern.1, pattern.2, pattern.3))
+        }
+        else {
+            println(error)
+        }
+        return expressions
+    }
+}()
+
 extension LocalizedString {
     class func arrayFromNSString(contents: NSString) -> [LocalizedString] {
         
         var localizedStrings: [LocalizedString] = []
-        let OneLinePattern = "\\s*\\\"(.+)\\\"\\s*=\\s*\\\"(.+)\\\";\\s*//\\s*(.*)\\s*"
-        var error: NSError?
-        if let regex = NSRegularExpression(pattern: OneLinePattern, options: nil, error: &error) {
-            var offset = 0
-            regex.enumerateMatchesInString(contents, options: nil, range: NSMakeRange(0, contents.length)) { (textCheckingResult, flags, stop) -> Void in
-                
-                let source = contents.substringWithRange(textCheckingResult.range) as NSString
-                var key = textCheckingResult.rangeAtIndex(1)
-                key.location -= offset
-                var value = textCheckingResult.rangeAtIndex(2)
-                value.location -= offset
-                var comment = textCheckingResult.rangeAtIndex(3)
-                comment.location -= offset
-                let localized = LocalizedString(source: source, key: key, value: value, comment: comment, modified: false)
-                
-                localizedStrings.append(localized)
-                
-                offset += source.length
+        
+        var searchRange = NSMakeRange(0, contents.length)
+        while searchRange.location < NSMaxRange(searchRange) {
+        
+            let matches = RegularExpressions.map { (expression) -> (NSTextCheckingResult?, Int, Int, Int) in
+                return (expression.0.firstMatchInString(contents, options: nil, range: searchRange), expression.1, expression.2, expression.3)
+            }.filter { $0.0 != nil }.map { ($0.0!, $0.1, $0.2, $0.3) }
+            
+            if matches.count == 0 {
+                break
             }
+            
+            let bestMatch = matches.reduce(matches.first!) { (bestMatch, match) -> (NSTextCheckingResult, Int, Int, Int) in
+                return match.0.range.location < bestMatch.0.range.location ? match : bestMatch
+            }
+            
+            let match = bestMatch.0
+            let keyRangePosition = bestMatch.1
+            let valueRangePosition = bestMatch.2
+            let commentRangePosition = bestMatch.3
+            
+            let sourceRange = match.range
+            let source = contents.substringWithRange(sourceRange) as NSString
+            var keyRange = match.rangeAtIndex(keyRangePosition)
+            keyRange.location -= sourceRange.location
+            var valueRange = match.rangeAtIndex(valueRangePosition)
+            valueRange.location -= sourceRange.location
+            
+            var commentRange = NSMakeRange(NSNotFound, 0)
+            if commentRangePosition != NSNotFound {
+                commentRange = match.rangeAtIndex(commentRangePosition)
+                commentRange.location -= sourceRange.location
+            }
+            let localized = LocalizedString(source: source, key: keyRange, value: valueRange, comment: commentRange, modified: false)
+            
+            localizedStrings.append(localized)
+            
+            searchRange.location += source.length
+            searchRange.length -= source.length
         }
         return localizedStrings
     }
