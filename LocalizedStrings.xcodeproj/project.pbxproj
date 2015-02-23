@@ -15,6 +15,7 @@
 		DD52CFEF1A9769B500AA63F2 /* LocalizedStringsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD52CFEE1A9769B500AA63F2 /* LocalizedStringsTests.swift */; };
 		DD52CFF91A976C8500AA63F2 /* LocalizedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD52CFF81A976C8500AA63F2 /* LocalizedString.swift */; };
 		DD52CFFB1A976E6D00AA63F2 /* StringsFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD52CFFA1A976E6D00AA63F2 /* StringsFile.swift */; };
+		DD7C93481A9B6A5A00A0680D /* StringPattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD7C93471A9B6A5A00A0680D /* StringPattern.swift */; };
 		DD8052821A977864002F8456 /* WindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD8052811A977864002F8456 /* WindowController.swift */; };
 /* End PBXBuildFile section */
 
@@ -41,6 +42,7 @@
 		DD52CFEE1A9769B500AA63F2 /* LocalizedStringsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizedStringsTests.swift; sourceTree = "<group>"; };
 		DD52CFF81A976C8500AA63F2 /* LocalizedString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalizedString.swift; sourceTree = "<group>"; };
 		DD52CFFA1A976E6D00AA63F2 /* StringsFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringsFile.swift; sourceTree = "<group>"; };
+		DD7C93471A9B6A5A00A0680D /* StringPattern.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StringPattern.swift; path = LocalizedStrings/StringPattern.swift; sourceTree = "<group>"; };
 		DD8052811A977864002F8456 /* WindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WindowController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -65,6 +67,7 @@
 		DD52CFCB1A9769B500AA63F2 = {
 			isa = PBXGroup;
 			children = (
+				DD7C93471A9B6A5A00A0680D /* StringPattern.swift */,
 				DD52CFDF1A9769B500AA63F2 /* Images.xcassets */,
 				DD52CFD61A9769B500AA63F2 /* LocalizedStrings */,
 				DD52CFEB1A9769B500AA63F2 /* LocalizedStringsTests */,
@@ -223,6 +226,7 @@
 				DD52CFFB1A976E6D00AA63F2 /* StringsFile.swift in Sources */,
 				DD8052821A977864002F8456 /* WindowController.swift in Sources */,
 				DD52CFDC1A9769B500AA63F2 /* ViewController.swift in Sources */,
+				DD7C93481A9B6A5A00A0680D /* StringPattern.swift in Sources */,
 				DD52CFDA1A9769B500AA63F2 /* AppDelegate.swift in Sources */,
 				DD52CFF91A976C8500AA63F2 /* LocalizedString.swift in Sources */,
 				DD52CFDE1A9769B500AA63F2 /* Document.swift in Sources */,
