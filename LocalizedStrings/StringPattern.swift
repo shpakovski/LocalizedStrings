@@ -39,3 +39,28 @@ let StringPatterns: [StringPattern] = {
         return stringPatterns
     }
 }()
+
+struct StringPatternMatch {
+    let stringPattern: StringPattern
+    let match: NSTextCheckingResult
+}
+
+func firstPatternMatchInString(contents: NSString, #range: NSRange) -> StringPatternMatch? {
+    
+    var possibleStringMatches = StringPatterns.reduce([StringPatternMatch]()) { (var matches, stringPattern) -> [StringPatternMatch] in
+        if let match = stringPattern.expression.firstMatchInString(contents, options: nil, range: range) {
+            matches.append(StringPatternMatch(stringPattern: stringPattern, match: match))
+        }
+        return matches
+    }
+    
+    if possibleStringMatches.count == 0 {
+        return nil
+    }
+    
+    var bestStringMatch = possibleStringMatches.removeAtIndex(0)
+    bestStringMatch = possibleStringMatches.reduce(bestStringMatch) { (bestMatch, nextMatch) -> StringPatternMatch in
+        return nextMatch.match.range.location < bestMatch.match.range.location ? nextMatch : bestMatch
+    }
+    return bestStringMatch
+}
