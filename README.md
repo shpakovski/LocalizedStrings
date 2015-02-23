@@ -44,3 +44,4 @@ Then Import all translations into the document to update all localized keys and 
 2. Improve visual feedback in the table after merge
 3. Provide more information about applied changes
 4. Add filter to show only changes
+5. Recognize more formats in the `.strings` file
