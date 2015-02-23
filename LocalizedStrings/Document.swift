@@ -25,15 +25,15 @@ class Document: NSDocument {
     }
 
     override func makeWindowControllers() {
+        
+        if self.stringsFile == nil {
+            self.stringsFile = StringsFile()
+        }
+        
         // Returns the Storyboard that contains your Document window.
         let storyboard = NSStoryboard(name: "Main", bundle: nil)!
         let windowController = storyboard.instantiateControllerWithIdentifier("Document Window Controller") as WindowController
-        
-        if stringsFile == nil {
-            stringsFile = StringsFile()
-        }
-        windowController.stringsFile = stringsFile
-        
+        windowController.stringsFile = self.stringsFile
         self.addWindowController(windowController)
     }
 
@@ -45,11 +45,24 @@ class Document: NSDocument {
 //        return nil
     }
     
-    var stringsFile: StringsFile?
+    var stringsFile: StringsFile? {
+        didSet {
+            if let windowController = self.windowControllers.first as? WindowController {
+                windowController.stringsFile = self.stringsFile
+            }
+            self.undoManager?.registerUndoWithTarget(self, selector: "undoStringsFile:", object: oldValue)
+        }
+    }
+    
+    @IBAction func undoStringsFile(sender: AnyObject) {
+        self.stringsFile = sender as? StringsFile
+    }
 
     override func readFromURL(url: NSURL, ofType typeName: String, error outError: NSErrorPointer) -> Bool {
-        stringsFile = StringsFile(url: url, error: outError)
-        return stringsFile != nil
+        self.undoManager?.disableUndoRegistration()
+        self.stringsFile = StringsFile(url: url, error: outError)
+        self.undoManager?.enableUndoRegistration()
+        return self.stringsFile != nil
     }
     
 //    override func readFromData(data: NSData, ofType typeName: String, error outError: NSErrorPointer) -> Bool {
@@ -59,5 +72,36 @@ class Document: NSDocument {
 //            outError.memory = NSError(domain: NSOSStatusErrorDomain, code: unimpErr, userInfo: nil)
 //            return false
 //    }
+    
+    @IBAction func userDidPressImportStrings(sender: AnyObject) {
+        
+        if let documentWindow = self.windowControllers.first?.window as? NSWindow {
+            let openPanel = NSOpenPanel()
+            openPanel.canChooseDirectories = false
+            openPanel.allowedFileTypes = ["strings"]
+            openPanel.allowsOtherFileTypes = false
+            openPanel.beginSheetModalForWindow(documentWindow) { response in
+                if response == NSModalResponseOK {
+                    if let stringsURL = openPanel.URL {
+                        self.importStringsFromURL(stringsURL)
+                    }
+                }
+            }
+        }
+    }
+    
+    func importStringsFromURL(stringsURL: NSURL) {
+        var error: NSError?
+        if let importedStringsFile = StringsFile(url: stringsURL, error: &error) {
+            if let currentStringsFile = self.stringsFile {
+                self.stringsFile = StringsFile.merge(currentStringsFile, with: importedStringsFile)
+            }
+            else {
+                self.stringsFile = importedStringsFile
+            }
+        }
+        else {
+            println(error)
+        }
+    }
 }
-

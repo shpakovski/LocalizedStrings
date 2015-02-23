@@ -29,52 +29,28 @@ class StringsFile {
     let encoding: Encoding
     let localizedStrings: [LocalizedString]
     
-    init(contents: String?, encoding: Encoding) {
+    init(localizedStrings: [LocalizedString], encoding: Encoding) {
         self.encoding = .UTF8
-        
-        var localizedStrings: [LocalizedString] = []
-        if let contents = contents {
-            let nsstring = contents as NSString
-            
-            let OneLinePattern = "\\s*\\\"(.+)\\\"\\s*=\\s*\\\"(.+)\\\";\\s*//\\s*(.*)\\s*"
-            var error: NSError?
-            if let regex = NSRegularExpression(pattern: OneLinePattern, options: nil, error: &error) {
-                var offset = 0
-                regex.enumerateMatchesInString(nsstring, options: nil, range: NSMakeRange(0, nsstring.length)) { (textCheckingResult, flags, stop) -> Void in
-                    
-                    let source = nsstring.substringWithRange(textCheckingResult.range) as NSString
-                    var key = textCheckingResult.rangeAtIndex(1)
-                    key.location -= offset
-                    var value = textCheckingResult.rangeAtIndex(2)
-                    value.location -= offset
-                    var comment = textCheckingResult.rangeAtIndex(3)
-                    comment.location -= offset
-                    let localized = LocalizedString(source: source, key: key, value: value, comment: comment)
-                    
-                    localizedStrings.append(localized)
-                    
-                    offset += source.length
-                }
-            }
-        }
         self.localizedStrings = localizedStrings
     }
     
     convenience init() {
-        self.init(contents: nil, encoding: .UTF8)
+        self.init(localizedStrings: [LocalizedString](), encoding: .UTF8)
     }
     
     convenience init?(url: NSURL, error: NSErrorPointer) {
         
         var enc = NSUTF8StringEncoding
         if let string = NSString(contentsOfURL: url, usedEncoding: &enc, error: error) {
+            
+            let localizedStrings = LocalizedString.arrayFromNSString(string)
             switch enc {
                 
             case NSUTF8StringEncoding:
-                self.init(contents: string, encoding: .UTF8)
+                self.init(localizedStrings: localizedStrings, encoding: .UTF8)
                 
             case NSUTF16StringEncoding:
-                self.init(contents: string, encoding: .UTF16)
+                self.init(localizedStrings: localizedStrings, encoding: .UTF16)
                 
             default:
                 self.init()
@@ -95,5 +71,25 @@ class StringsFile {
         case .UTF16:
             return contents.dataUsingEncoding(NSUTF16StringEncoding, allowLossyConversion: false)
         }
+    }
+}
+
+extension StringsFile {
+    class func merge(stringsFile1: StringsFile, with stringsFile2: StringsFile) -> StringsFile {
+
+        var bucket2 = [String: LocalizedString]()
+        for localizedString2 in stringsFile2.localizedStrings {
+            bucket2[localizedString2.keyString] = localizedString2
+        }
+        
+        let resultStrings = stringsFile1.localizedStrings.map { (localizedString1) -> LocalizedString in
+            if let localizedString2 = bucket2[localizedString1.keyString] {
+                return LocalizedString.merge(localizedString1, with: localizedString2)
+            }
+            else {
+                return localizedString1
+            }
+        }
+        return StringsFile(localizedStrings: resultStrings, encoding: stringsFile1.encoding)
     }
 }

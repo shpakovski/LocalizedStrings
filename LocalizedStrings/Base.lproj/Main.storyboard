@@ -82,6 +82,12 @@
                                             </menu>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="m54-Is-iLE"/>
+                                        <menuItem title="Import…" keyEquivalent="O" id="sEC-F8-wH8">
+                                            <connections>
+                                                <action selector="userDidPressImportStrings:" target="Ady-hI-5gd" id="Zp7-gO-CmN"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="MUa-Yo-heB"/>
                                         <menuItem title="Close" keyEquivalent="w" id="DVo-aG-piG">
                                             <connections>
                                                 <action selector="performClose:" target="Ady-hI-5gd" id="HmO-Ls-i7Q"/>
@@ -644,7 +650,7 @@
                 <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="LocalizedStrings" customModuleProvider="target"/>
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="75" y="0.0"/>
+            <point key="canvasLocation" x="75" y="-224"/>
         </scene>
         <!--Window Controller-->
         <scene sceneID="R2V-B0-nI4">
@@ -757,12 +763,12 @@
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                                 <connections>
-                                    <binding destination="5gI-5U-AMq" name="displayPatternValue1" keyPath="self.encodingStringRepresentation" id="d1d-0H-Tw6">
+                                    <binding destination="0Ob-ZZ-zeZ" name="displayPatternValue2" keyPath="arrangedObjects.@count" previousBinding="d1d-0H-Tw6" id="QUc-Tz-09H">
                                         <dictionary key="options">
                                             <string key="NSDisplayPattern">Encoding: %{value1}@, Count: %{value2}@</string>
                                         </dictionary>
                                     </binding>
-                                    <binding destination="0Ob-ZZ-zeZ" name="displayPatternValue2" keyPath="arrangedObjects.@count" previousBinding="d1d-0H-Tw6" id="QUc-Tz-09H">
+                                    <binding destination="5gI-5U-AMq" name="displayPatternValue1" keyPath="self.encodingStringRepresentation" id="d1d-0H-Tw6">
                                         <dictionary key="options">
                                             <string key="NSDisplayPattern">Encoding: %{value1}@, Count: %{value2}@</string>
                                         </dictionary>
