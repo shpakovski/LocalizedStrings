@@ -45,22 +45,48 @@ struct StringPatternMatch {
     let match: NSTextCheckingResult
 }
 
-func firstPatternMatchInString(contents: NSString, #range: NSRange) -> StringPatternMatch? {
+extension NSString {
     
-    var possibleStringMatches = StringPatterns.reduce([StringPatternMatch]()) { (var matches, stringPattern) -> [StringPatternMatch] in
-        if let match = stringPattern.expression.firstMatchInString(contents, options: nil, range: range) {
-            matches.append(StringPatternMatch(stringPattern: stringPattern, match: match))
+    func firstPatternMatchInRange(range: NSRange) -> StringPatternMatch? {
+        
+        var possibleStringMatches = StringPatterns.reduce([StringPatternMatch]()) { (var matches, stringPattern) -> [StringPatternMatch] in
+            if let match = stringPattern.expression.firstMatchInString(self, options: nil, range: range) {
+                matches.append(StringPatternMatch(stringPattern: stringPattern, match: match))
+            }
+            return matches
         }
-        return matches
+        
+        if possibleStringMatches.count == 0 {
+            return nil
+        }
+        
+        var bestStringMatch = possibleStringMatches.removeAtIndex(0)
+        bestStringMatch = possibleStringMatches.reduce(bestStringMatch) { (bestMatch, nextMatch) -> StringPatternMatch in
+            return nextMatch.match.range.location < bestMatch.match.range.location ? nextMatch : bestMatch
+        }
+        return bestStringMatch
     }
-    
-    if possibleStringMatches.count == 0 {
-        return nil
+
+    func firstLocalizedStringInRange(searchRange: NSRange) -> LocalizedString? {
+        if let patternMatch = self.firstPatternMatchInRange(searchRange) {
+            
+            let textCheckingResult = patternMatch.match
+            let range = textCheckingResult.range
+            let source = self.substringWithRange(range) as NSString
+            var keyRange = textCheckingResult.rangeAtIndex(patternMatch.stringPattern.keyRangePosition)
+            keyRange.location -= range.location
+            var valueRange = textCheckingResult.rangeAtIndex(patternMatch.stringPattern.valueRangePosition)
+            valueRange.location -= range.location
+            
+            var commentRange = NSMakeRange(NSNotFound, 0)
+            if patternMatch.stringPattern.commentRangePosition != NSNotFound {
+                commentRange = textCheckingResult.rangeAtIndex(patternMatch.stringPattern.commentRangePosition)
+                commentRange.location -= range.location
+            }
+            return LocalizedString(source: source, key: keyRange, value: valueRange, comment: commentRange, modified: false)
+        }
+        else {
+            return nil
+        }
     }
-    
-    var bestStringMatch = possibleStringMatches.removeAtIndex(0)
-    bestStringMatch = possibleStringMatches.reduce(bestStringMatch) { (bestMatch, nextMatch) -> StringPatternMatch in
-        return nextMatch.match.range.location < bestMatch.match.range.location ? nextMatch : bestMatch
-    }
-    return bestStringMatch
 }

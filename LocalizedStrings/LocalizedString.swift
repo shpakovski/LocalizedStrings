@@ -88,26 +88,10 @@ extension LocalizedString {
 
         var searchRange = NSMakeRange(0, contents.length)
         while searchRange.location < NSMaxRange(searchRange) {
-            if let firstMatch = firstPatternMatchInString(contents, range: searchRange) {
-                let match = firstMatch.match
-                let sourceRange = match.range
-                let source = contents.substringWithRange(sourceRange) as NSString
-                var keyRange = match.rangeAtIndex(firstMatch.stringPattern.keyRangePosition)
-                keyRange.location -= sourceRange.location
-                var valueRange = match.rangeAtIndex(firstMatch.stringPattern.valueRangePosition)
-                valueRange.location -= sourceRange.location
-                
-                var commentRange = NSMakeRange(NSNotFound, 0)
-                if firstMatch.stringPattern.commentRangePosition != NSNotFound {
-                    commentRange = match.rangeAtIndex(firstMatch.stringPattern.commentRangePosition)
-                    commentRange.location -= sourceRange.location
-                }
-                let localized = LocalizedString(source: source, key: keyRange, value: valueRange, comment: commentRange, modified: false)
-                
-                localizedStrings.append(localized)
-                
-                searchRange.location += source.length
-                searchRange.length -= source.length
+            if let localizedString = contents.firstLocalizedStringInRange(searchRange) {
+                localizedStrings.append(localizedString)
+                searchRange.location += localizedString.sourceString.length
+                searchRange.length -= localizedString.sourceString.length
             }
             else {
                 break
