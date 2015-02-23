@@ -64,7 +64,9 @@ class StringsFile {
     }
     
     func dataRepresentation() -> NSData? {
-        var contents = "Hello";
+        var contents = self.localizedStrings.reduce("") { (string, localizedString) -> String in
+            return string + "\n" + localizedString.resultString
+        }
         switch encoding {
         case .UTF8:
             return contents.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)

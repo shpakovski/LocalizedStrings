@@ -16,29 +16,32 @@ class LocalizedString: NSObject {
         self.commentRange = commentRange
         self.modified = modified
     }
-    
-    convenience init(source sourceString: NSString, key keyRange: NSRange, value valueRange: NSRange, comment commentRange: NSRange) {
-        self.init(source: sourceString, key: keyRange, value: valueRange, comment: commentRange, modified: false)
+}
+
+// MARK:
+
+var KeyAttributes: [NSObject : AnyObject] = {
+    let smallFontSize = NSFont.systemFontSizeForControlSize(.SmallControlSize)
+    if let smallFixedFont = NSFont.userFixedPitchFontOfSize(smallFontSize) {
+        return [NSFontAttributeName: smallFixedFont]
     }
-    
-    lazy var KeyAttributes: [NSObject : AnyObject] = {
-        let smallFontSize = NSFont.systemFontSizeForControlSize(.SmallControlSize)
-        if let smallFixedFont = NSFont.userFixedPitchFontOfSize(smallFontSize) {
-            return [NSFontAttributeName: smallFixedFont]
-        }
-        let smallBoldFont = NSFont.systemFontOfSize(smallFontSize)
-        return [NSFontAttributeName: smallBoldFont]
-    }()
+    let smallBoldFont = NSFont.systemFontOfSize(smallFontSize)
+    return [NSFontAttributeName: smallBoldFont]
+}()
 
-    lazy var ValueAttributes: [NSObject : AnyObject] = {
-        let smallRegularFont = NSFont.systemFontOfSize(NSFont.systemFontSizeForControlSize(.SmallControlSize))
-        return [NSFontAttributeName: smallRegularFont]
-    }()
+var ValueAttributes: [NSObject : AnyObject] = {
+    let smallRegularFont = NSFont.systemFontOfSize(NSFont.systemFontSizeForControlSize(.SmallControlSize))
+    return [NSFontAttributeName: smallRegularFont]
+}()
 
-    lazy var ModifiedValueAttributes: [NSObject : AnyObject] = {
-        let smallBoldFont = NSFont.boldSystemFontOfSize(NSFont.systemFontSizeForControlSize(.SmallControlSize))
-        return [NSFontAttributeName: smallBoldFont]
-    }()
+var ModifiedValueAttributes: [NSObject : AnyObject] = {
+    let smallBoldFont = NSFont.boldSystemFontOfSize(NSFont.systemFontSizeForControlSize(.SmallControlSize))
+    return [NSFontAttributeName: smallBoldFont]
+}()
+
+// MARK:
+
+extension LocalizedString {
     
     var attributedString: NSAttributedString {
         get {
@@ -46,7 +49,7 @@ class LocalizedString: NSObject {
             let attributedKey = NSAttributedString(string: key, attributes: KeyAttributes)
             let separator = NSAttributedString(string: " = ")
             let value = self.sourceString.substringWithRange(valueRange)
-            let attributedValue = NSAttributedString(string: value, attributes: self.modified ? self.ModifiedValueAttributes : self.ValueAttributes)
+            let attributedValue = NSAttributedString(string: value, attributes: self.modified ? ModifiedValueAttributes : ValueAttributes)
             
             let result = NSMutableAttributedString()
             result.appendAttributedString(attributedKey)
@@ -67,7 +70,15 @@ class LocalizedString: NSObject {
             return sourceString.substringWithRange(valueRange)
         }
     }
+    
+    var resultString: String {
+        get {
+            return self.sourceString;
+        }
+    }
 }
+
+// MARK:
 
 extension LocalizedString {
     class func arrayFromNSString(contents: NSString) -> [LocalizedString] {
@@ -86,7 +97,7 @@ extension LocalizedString {
                 value.location -= offset
                 var comment = textCheckingResult.rangeAtIndex(3)
                 comment.location -= offset
-                let localized = LocalizedString(source: source, key: key, value: value, comment: comment)
+                let localized = LocalizedString(source: source, key: key, value: value, comment: comment, modified: false)
                 
                 localizedStrings.append(localized)
                 
@@ -95,16 +106,20 @@ extension LocalizedString {
         }
         return localizedStrings
     }
-}
-
-extension LocalizedString {
+    
     class func merge(string1: LocalizedString, with string2: LocalizedString) -> LocalizedString {
         assert(string1.keyString == string2.keyString, "Localized strings must have the same key")
         if string1.valueString == string2.valueString {
-            return LocalizedString(source: string1.sourceString, key: string1.keyRange, value: string1.valueRange, comment: string1.commentRange)
+            return string1.copy() as LocalizedString
         }
         else {
             return LocalizedString(source: string2.sourceString, key: string2.keyRange, value: string2.valueRange, comment: string2.commentRange, modified: true)
         }
+    }
+}
+
+extension LocalizedString: NSCopying {
+    func copyWithZone(zone: NSZone) -> AnyObject {
+        return LocalizedString(source: self.sourceString, key: self.keyRange, value: self.valueRange, comment: self.commentRange, modified: self.modified)
     }
 }
