@@ -652,8 +652,7 @@
                 <windowController storyboardIdentifier="Document Window Controller" id="jGA-0Y-lOj" customClass="WindowController" customModule="LocalizedStrings" customModuleProvider="target" sceneMemberID="viewController">
                     <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" id="Ckk-yw-fiv">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
-                        <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-                        <rect key="contentRect" x="196" y="240" width="480" height="270"/>
+                        <rect key="contentRect" x="196" y="240" width="640" height="480"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
                     </window>
                     <connections>
@@ -669,11 +668,11 @@
             <objects>
                 <viewController id="5gI-5U-AMq" customClass="ViewController" customModule="LocalizedStrings" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="ERx-hH-rdd">
-                        <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                        <rect key="frame" x="0.0" y="0.0" width="640" height="480"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <scrollView autohidesScrollers="YES" horizontalLineScroll="35" horizontalPageScroll="10" verticalLineScroll="35" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h5z-FG-LkS">
-                                <rect key="frame" x="20" y="20" width="440" height="205"/>
+                                <rect key="frame" x="20" y="20" width="600" height="415"/>
                                 <clipView key="contentView" drawsBackground="NO" id="8hO-Rm-sli">
                                     <rect key="frame" x="1" y="0.0" width="238" height="134"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -685,7 +684,7 @@
                                             <tableViewGridLines key="gridStyleMask" dashed="YES"/>
                                             <color key="gridColor" name="controlHighlightColor" catalog="System" colorSpace="catalog"/>
                                             <tableColumns>
-                                                <tableColumn identifier="LocalizedStringColumn" editable="NO" width="435" minWidth="40" maxWidth="1000" id="Q9E-K3-cus">
+                                                <tableColumn identifier="LocalizedStringColumn" editable="NO" width="595" minWidth="40" maxWidth="1000" id="Q9E-K3-cus">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Identifier">
                                                         <font key="font" metaFont="smallSystem"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -699,11 +698,11 @@
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView id="VSA-yV-9ur">
-                                                            <rect key="frame" x="1" y="1" width="435" height="33"/>
+                                                            <rect key="frame" x="1" y="1" width="595" height="33"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Nvt-I4-ZkE">
-                                                                    <rect key="frame" x="8" y="9" width="418" height="17"/>
+                                                                    <rect key="frame" x="8" y="9" width="579" height="17"/>
                                                                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="&quot;key&quot; = &quot;value&quot;; // comment" id="YuC-mH-Yxa">
                                                                         <font key="font" metaFont="system"/>
                                                                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -751,16 +750,21 @@
                                 </scroller>
                             </scrollView>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="VRb-mZ-FML">
-                                <rect key="frame" x="18" y="233" width="444" height="17"/>
+                                <rect key="frame" x="18" y="443" width="604" height="17"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Encoding" id="291-X8-giu">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                                 <connections>
-                                    <binding destination="5gI-5U-AMq" name="displayPatternValue1" keyPath="self.encodingStringRepresentation" id="jQX-tq-zDy">
+                                    <binding destination="5gI-5U-AMq" name="displayPatternValue1" keyPath="self.encodingStringRepresentation" id="d1d-0H-Tw6">
                                         <dictionary key="options">
-                                            <string key="NSDisplayPattern">Encoding: %{value1}@</string>
+                                            <string key="NSDisplayPattern">Encoding: %{value1}@, Count: %{value2}@</string>
+                                        </dictionary>
+                                    </binding>
+                                    <binding destination="0Ob-ZZ-zeZ" name="displayPatternValue2" keyPath="arrangedObjects.@count" previousBinding="d1d-0H-Tw6" id="QUc-Tz-09H">
+                                        <dictionary key="options">
+                                            <string key="NSDisplayPattern">Encoding: %{value1}@, Count: %{value2}@</string>
                                         </dictionary>
                                     </binding>
                                 </connections>
@@ -787,7 +791,7 @@
                     </connections>
                 </arrayController>
             </objects>
-            <point key="canvasLocation" x="75" y="655"/>
+            <point key="canvasLocation" x="75" y="865"/>
         </scene>
     </scenes>
 </document>
