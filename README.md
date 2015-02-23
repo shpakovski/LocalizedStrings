@@ -1,22 +1,22 @@
-# The problem
+# The Problem
 
 So, you have the file `en.lproj/Localizable.strings` with the following contents:
 
-```
+``` objc
 "settings.about.design" = "Design"; // Title in the Settings row for the Designer contact
 "settings.about.development" = "Development"; // Title in the Settings row for the Developer contact
 ```
 
 Then you translate this into `ru.lproj/Localizable.strings` using Crowdin or any other service:
 
-```
+``` objc
 "settings.about.design" = "Дизайн"; // Title in the Settings row for the Designer contact
 "settings.about.development" = "Разработка"; // Title in the Settings row for the Developer contact
 ```
 
 Eventually, the file `en.lproj/Localizable.strings` gets larger:
 
-```
+``` objc
 "settings.about.design" = "Design"; // Title in the Settings row for the Designer contact
 "settings.about.development" = "Development"; // Title in the Settings row for the Developer contact
 "settings.about.contact-us" = "Contact Us"; // Title in the Settings row for the Contact sub-screen
@@ -25,7 +25,7 @@ Eventually, the file `en.lproj/Localizable.strings` gets larger:
 
 However, your give translators only changes and get result like this:
 
-```
+``` objc
 "settings.about.contact-us" = "Свяжитесь с нами"; // Title in the Settings row for the Contact sub-screen
 "settings.about.help" = "Помощь"; // Title in the Settings row for the Help sub-screen
 ```
