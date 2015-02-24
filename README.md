@@ -34,7 +34,7 @@ Finally, after many iterations, you have a bunch of translations, but still the 
 
 # The Solution
 
-`LocalizedStrings.app` is a GUI editor for `.strings` files. You open the document from the hard drive, then Import one or more translated `.strings` files to merge new values for localized keys, result file can be saved back to the hard drive. Step-by-step:
+`LocalizedStrings.app` is a GUI editor for `.strings` files. You open the document from the hard drive, then Import one or more translated `.strings` files to merge new (translated) values for presented keys, result file can be saved back to the hard drive. Step-by-step:
 
 1. For example, you have a not-yet-translated or partially-translated file `ru.lproj/Localizable.strings` and localized files `Part1.strings`, `Part2.strings`, `Part3.strings`.
 2. Open `ru.lproj/Localizable.strings` with `LocalizedStrings.app` in Finder
