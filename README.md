@@ -34,14 +34,18 @@ Finally, after many iterations, you have a bunch of translations, but still the 
 
 # The Solution
 
-Copy the final version of the `en.lproj/Localizable.strings` into `ru.lproj/Localizable.strings` and open it with `LocalizedStrings.app`.
+`LocalizedStrings.app` is a GUI editor for `.strings` files. You open the document on the hard drive, then Import translated `.strings` file to merge new values for localized keys, result file can be saved back to the hard drive. Step-by-step:
 
-Then Import all translations into the document to update all localized keys and see the difference. Save the final `.strings` file with applied changes.
+1. For example, you have a not-yet-translated or partially-translated file `ru.lproj/Localizable.strings` and localized files `Part1.strings`, `Part2.strings`, `Part3.strings`.
+2. Open `ru.lproj/Localizable.strings` with `LocalizedStrings.app` in Finder
+3. Import — `Shift-Command-O` — translations `Part1.strings`, `Part2.strings`, `Part3.strings` into the open document.
+4. Save the new version with translated values.
+
+*Please note: only the keys presented in the original `.strings` file will be extracted from localized versions.*
 
 # TBD
 
-1. Export strings which have not yet been translated
-2. Improve visual feedback in the table after merge
-3. Provide more information about applied changes
-4. Add filter to show only changes
-5. Recognize more formats in the `.strings` file
+1. Filter strings by diff criteria and export the list as a new `.strings` file ready for translation
+2. Improve visual feedback in the table rows after Import, bold font is just a proof-of-concept
+3. Provide more information about applied changes i.e. unused strings, maybe in the status bar
+4. Recognize more exotic localized string formats with comments in the `.strings` file
