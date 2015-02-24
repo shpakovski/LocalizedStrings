@@ -45,7 +45,7 @@ Finally, after many iterations, you have a bunch of translations, but still the 
 
 # TBD
 
-1. Filter strings by diff criteria and export the list as a new `.strings` file ready for translation
+1. Filter strings by the ‘modified’ flag and export the list as a new `.strings` file ready for translation
 2. Improve visual feedback in the table rows after Import, bold font is just a proof-of-concept
 3. Provide more information about applied changes i.e. unused strings, maybe in the status bar
 4. Recognize more exotic localized string formats with comments in the `.strings` file
