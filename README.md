@@ -23,7 +23,7 @@ Eventually, the file `en.lproj/Localizable.strings` gets larger:
 "settings.about.help" = "Help"; // Title in the Settings row for the Help sub-screen
 ```
 
-However, your give translators only changes and get result like this:
+However, you give translators only new strings which result in translation like this:
 
 ``` objc
 "settings.about.contact-us" = "Свяжитесь с нами"; // Title in the Settings row for the Contact sub-screen
