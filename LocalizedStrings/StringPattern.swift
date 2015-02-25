@@ -73,10 +73,8 @@ extension NSString {
             let patternRange = textCheckingResult.range
             let source = self.substringWithRange(patternRange) as NSString
             
-            let (keyRangeIndex, valueRangeIndex) = (stringPattern.keyRangeIndex, stringPattern.valueRangeIndex)
-            var keyRange = textCheckingResult.rangeAtIndex(keyRangeIndex)
+            var (keyRange, valueRange) = (textCheckingResult.rangeAtIndex(stringPattern.keyRangeIndex), textCheckingResult.rangeAtIndex(stringPattern.valueRangeIndex))
             keyRange.location -= patternRange.location
-            var valueRange = textCheckingResult.rangeAtIndex(valueRangeIndex)
             valueRange.location -= patternRange.location
 
             let commentRange: NSRange = {
