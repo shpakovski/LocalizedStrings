@@ -8,81 +8,88 @@
 
 import Foundation
 
-struct StringPattern {
-    let expression: NSRegularExpression
-    let keyRangePosition: Int
-    let valueRangePosition: Int
-    let commentRangePosition: Int // may be NSNotFound
+typealias RangeIndex = Int
+
+enum OptionalRangeIndex {
+    case At(RangeIndex)
+    case NotPresented
 }
 
-let StringPatterns: [StringPattern] = {
+struct StringPattern {
+    let expression: NSRegularExpression
+    let keyRangeIndex: RangeIndex
+    let valueRangeIndex: RangeIndex
+    let optionalCommentRangeIndex: OptionalRangeIndex
     
-    typealias RawStringPattern = (String, Int, Int, Int) // regexp, key-index, value-index, comment-index or NSNotFound
-    let knownRawPatterns: [RawStringPattern] = {
-        return [
-            // \s*/\*+\s*(.*)\s*\*+/\s*\"(.*)\"\s*=\s*\"(.*)\";\s*
-            ("\\s*/\\*+\\s*(.*)\\s*\\*+/\\s*\\\"(.*)\\\"\\s*=\\s*\\\"(.*)\\\";\\s*", 2, 3, 1), // /** comment **/ "key" = "value";
-            // \s*\"(.+)\"\s*=\s*\"(.+)\";\s*//\s*(.*)\s*
-            ("\\s*\\\"(.+)\\\"\\s*=\\s*\\\"(.+)\\\";\\s*//\\s*(.*)\\s*", 1, 2, 3), // "key" = "value"; // comment
-            // \s*\"(.+)\"\s*=\s*\"(.+)\";\s*
-            ("\\s*\\\"(.+)\\\"\\s*=\\s*\\\"(.+)\\\";\\s*", 1, 2, NSNotFound)] // "key" = "value";
-        }()
-    
-    return knownRawPatterns.reduce([StringPattern]()) { (var stringPatterns, raw) -> [StringPattern] in
-        var error: NSError?
-        if let expression = NSRegularExpression(pattern: raw.0, options: nil, error: &error) {
-            stringPatterns.append(StringPattern(expression: expression, keyRangePosition: raw.1, valueRangePosition: raw.2, commentRangePosition: raw.3))
-        }
-        else {
-            println(error)
-        }
-        return stringPatterns
+    init(pattern: String, key: RangeIndex, value: RangeIndex, optionalComment: OptionalRangeIndex) {
+        self.expression = NSRegularExpression(pattern: pattern, options: nil, error: nil)! // Invalid pattern must crash the app
+        self.keyRangeIndex = key
+        self.valueRangeIndex = value
+        self.optionalCommentRangeIndex = optionalComment
     }
+}
+
+let stringPatterns: [StringPattern] = {
+    return [                 // \s*/\*+\s*(.*)\s*\*+/\s*\"(.*)\"\s*=\s*\"(.*)\";\s*                    /** comment **/ "key" = "value";
+        StringPattern(pattern: "\\s*/\\*+\\s*(.*)\\s*\\*+/\\s*\\\"(.*)\\\"\\s*=\\s*\\\"(.*)\\\";\\s*", key: 2, value: 3, optionalComment: .At(1)),
+                             // \s*\"(.+)\"\s*=\s*\"(.+)\";\s*//\s*(.*)\s*                 "key" = "value"; // comment
+        StringPattern(pattern: "\\s*\\\"(.+)\\\"\\s*=\\s*\\\"(.+)\\\";\\s*//\\s*(.*)\\s*", key: 1, value: 2, optionalComment: .At(3)),
+                             // \s*\"(.+)\"\s*=\s*\"(.+)\";\s*               "key" = "value";
+        StringPattern(pattern: "\\s*\\\"(.+)\\\"\\s*=\\s*\\\"(.+)\\\";\\s*", key: 1, value: 2, optionalComment: .NotPresented)]
 }()
 
 struct StringPatternMatch {
     let stringPattern: StringPattern
-    let match: NSTextCheckingResult
+    let textCheckingResult: NSTextCheckingResult
 }
 
 extension NSString {
     
     func firstPatternMatchInRange(range: NSRange) -> StringPatternMatch? {
         
-        var possibleStringMatches = StringPatterns.reduce([StringPatternMatch]()) { (var matches, stringPattern) -> [StringPatternMatch] in
+        var availableMatches = stringPatterns.reduce([StringPatternMatch]()) { (var matches, stringPattern) -> [StringPatternMatch] in
             if let match = stringPattern.expression.firstMatchInString(self, options: nil, range: range) {
-                matches.append(StringPatternMatch(stringPattern: stringPattern, match: match))
+                matches.append(StringPatternMatch(stringPattern: stringPattern, textCheckingResult: match))
             }
             return matches
         }
         
-        if possibleStringMatches.count == 0 {
-            return nil
+        if var bestMatch = availableMatches.first {
+            for nextMatch in dropFirst(availableMatches) {
+                if nextMatch.textCheckingResult.range.location < bestMatch.textCheckingResult.range.location {
+                    bestMatch = nextMatch
+                }
+            }
+            return bestMatch
         }
-        
-        var bestStringMatch = possibleStringMatches.removeAtIndex(0)
-        bestStringMatch = possibleStringMatches.reduce(bestStringMatch) { (bestMatch, nextMatch) -> StringPatternMatch in
-            return nextMatch.match.range.location < bestMatch.match.range.location ? nextMatch : bestMatch
-        }
-        return bestStringMatch
+        return nil
     }
 
     func firstLocalizedStringInRange(searchRange: NSRange) -> LocalizedString? {
         if let patternMatch = self.firstPatternMatchInRange(searchRange) {
             
-            let textCheckingResult = patternMatch.match
-            let range = textCheckingResult.range
-            let source = self.substringWithRange(range) as NSString
-            var keyRange = textCheckingResult.rangeAtIndex(patternMatch.stringPattern.keyRangePosition)
-            keyRange.location -= range.location
-            var valueRange = textCheckingResult.rangeAtIndex(patternMatch.stringPattern.valueRangePosition)
-            valueRange.location -= range.location
+            let (textCheckingResult, stringPattern) = (patternMatch.textCheckingResult, patternMatch.stringPattern)
             
-            var commentRange = NSMakeRange(NSNotFound, 0)
-            if patternMatch.stringPattern.commentRangePosition != NSNotFound {
-                commentRange = textCheckingResult.rangeAtIndex(patternMatch.stringPattern.commentRangePosition)
-                commentRange.location -= range.location
-            }
+            let patternRange = textCheckingResult.range
+            let source = self.substringWithRange(patternRange) as NSString
+            
+            let (keyRangeIndex, valueRangeIndex) = (stringPattern.keyRangeIndex, stringPattern.valueRangeIndex)
+            var keyRange = textCheckingResult.rangeAtIndex(keyRangeIndex)
+            keyRange.location -= patternRange.location
+            var valueRange = textCheckingResult.rangeAtIndex(valueRangeIndex)
+            valueRange.location -= patternRange.location
+
+            let commentRange: NSRange = {
+                switch stringPattern.optionalCommentRangeIndex {
+                case .At(let rangeIndex):
+                    var commentRange = textCheckingResult.rangeAtIndex(rangeIndex)
+                    commentRange.location -= patternRange.location
+                    return commentRange
+                case .NotPresented:
+                    return NSMakeRange(NSNotFound, 0)
+                }
+            }()
+            
             return LocalizedString(source: source, key: keyRange, value: valueRange, comment: commentRange, modified: false)
         }
         else {
