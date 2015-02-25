@@ -67,7 +67,6 @@ extension NSString {
 
     func firstLocalizedStringInRange(searchRange: NSRange) -> LocalizedString? {
         if let patternMatch = self.firstPatternMatchInRange(searchRange) {
-            
             let (textCheckingResult, stringPattern) = (patternMatch.textCheckingResult, patternMatch.stringPattern)
             
             let patternRange = textCheckingResult.range
